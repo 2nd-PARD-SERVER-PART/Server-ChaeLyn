@@ -21,6 +21,7 @@
 
 ## 4️⃣ 물품 삭제
 <img width="1392" alt="delete" src="https://github.com/2nd-PARD-SERVER-PART/Server-chaelyn/assets/100327184/58b175ac-b8d0-46cb-97aa-961c3ca9a711">
+* 삭제 후 확인
 <img width="1392" alt="findAll_delete" src="https://github.com/2nd-PARD-SERVER-PART/Server-chaelyn/assets/100327184/c7eda9bd-714b-4684-850d-e457a7c88e99">
 
 ---
