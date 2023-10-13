@@ -1,5 +1,6 @@
 package pard.rlacofls.hw3rd.controller;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pard.rlacofls.hw3rd.dto.ItemAddDto;
@@ -19,7 +20,7 @@ public class ItemController {
     }
 
     @PostMapping("/additem")
-    public ResponseDto<ItemEntity> addItem(@RequestBody ItemAddDto dto){
+    public ResponseDto<ItemEntity> addItem(@RequestBody ItemAddDto dto) {
         ResponseDto<ItemEntity> result = itemService.addItem(dto);
         return result;
     }
@@ -45,6 +46,32 @@ public class ItemController {
     @DeleteMapping("/deleteitem/{itemId}")
     public ResponseDto<?> deleteItem(@PathVariable Integer itemId) {
         ResponseDto<?> result = itemService.deleteItem(itemId);
+        return result;
+    }
+
+    //jpa 구문 만들어보깅
+    @GetMapping("/lessprice/{itemPrice}")
+    public ResponseDto<List<ItemEntity>> findItemEntitiesByItemPriceLessThan(@PathVariable int itemPrice) {
+        ResponseDto<List<ItemEntity>> result = itemService.findItemEntitiesByItemPriceLessThan(itemPrice);
+        return result;
+    }
+
+    @GetMapping("/lessquantity/{itemQuantity}")
+    public ResponseDto<List<ItemEntity>> findByItemQuantityLessThan(@PathVariable int itemQuantity) {
+        ResponseDto<List<ItemEntity>> result = itemService.findByItemQuantityLessThan(itemQuantity);
+        return result;
+    }
+
+    @GetMapping("/findkeyword/{keyword}")
+    public ResponseDto<List<ItemEntity>> findByItemNameContaining(@PathVariable String keyword) {
+        ResponseDto<List<ItemEntity>> result = itemService.findByItemNameContaining(keyword);
+        return result;
+    }
+
+    @GetMapping("/pricecheck/{minPrice}/{maxPrice}")
+    public ResponseDto<List<ItemEntity>> findByItemPriceBetween(@PathVariable int minPrice,
+                                                                @PathVariable int maxPrice) {
+        ResponseDto<List<ItemEntity>> result = itemService.findByItemPriceBetween(minPrice,maxPrice);
         return result;
     }
 }
