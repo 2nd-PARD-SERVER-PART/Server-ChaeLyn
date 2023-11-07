@@ -26,8 +26,8 @@ public class Sheet {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id")
-    //@JsonIgnore
+//    @JoinColumn(name = "club_id")
+    @JsonIgnore
     private Club club;
 
     @Builder

@@ -79,6 +79,8 @@ public class ClubService {
     public ResponseDto<?> deleteClub(Long clubId) {
         try{
             if (clubRepository.existsById(clubId)) {
+                Club club = clubRepository.findById(clubId).get();
+                club.delete();
                 clubRepository.deleteById(clubId);
                 return ResponseDto.setSuccess("성공적으로 삭제 되었습니다.", null);
             }

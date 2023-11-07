@@ -8,4 +8,7 @@ import java.util.Optional;
 
 public interface SheetRepository extends JpaRepository<Sheet, Long> {
     List<Sheet> findByPlace(String place);
+    boolean existsByPlace(String sheetPlace);
+    boolean existsByTime(String sheetTime);
+    boolean existsByDay(String sheetDay);
 }

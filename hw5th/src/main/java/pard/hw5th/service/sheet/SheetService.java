@@ -3,7 +3,11 @@ package pard.hw5th.service.sheet;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pard.hw5th.dto.ResponseDto;
+import pard.hw5th.dto.club.request.ClubCreateRequest;
+import pard.hw5th.dto.club.request.ClubUpdateRequest;
 import pard.hw5th.dto.sheet.request.SheetCreateRequest;
+import pard.hw5th.dto.sheet.request.SheetUpdateRequest;
 import pard.hw5th.entity.Club.Club;
 import pard.hw5th.entity.Sheet.Sheet;
 import pard.hw5th.repository.Club.ClubRepository;
@@ -18,8 +22,18 @@ public class SheetService {
     private final SheetRepository sheetRepository;
     private final ClubRepository clubRepository;
 
-    public Sheet save(SheetCreateRequest request) {
-        return sheetRepository.save(request.toEntity());
+    public ResponseDto<Sheet> createSheet(SheetCreateRequest sheetCreateRequest) {
+        Sheet newSheet = sheetCreateRequest.toEntity();
+        try {
+            if (sheetRepository.existsByPlace(sheetCreateRequest.getPlace())&&sheetRepository.existsByTime(sheetCreateRequest.getTime())&&sheetRepository.existsByDay(sheetCreateRequest.getDay())) {
+                return ResponseDto.setFailed("해당 시트는 이미 존재합니다");
+            }
+            sheetRepository.save(newSheet);
+            return ResponseDto.setSuccess("동아리가 추가되었습니다", newSheet);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed("데이터 베이스 오류");
+        }
     }
 
     @Transactional
@@ -62,6 +76,29 @@ public class SheetService {
 
     public List<Sheet> findPlace(String sheetPlace) {
         return sheetRepository.findByPlace(sheetPlace);
+    }
+
+    @Transactional
+    public ResponseDto<Sheet> updateSheet(Long sheetId, SheetUpdateRequest sheetUpdateRequest) {
+        Sheet sheet;
+        try{
+            sheet = sheetRepository.findById(sheetId).get();
+            if (!sheetRepository.existsById(sheetId)) {
+                return ResponseDto.setFailed("없는 시트의 Id입니다.");
+            }
+            if(!sheet.getPlace().isEmpty())
+                sheet.setPlace(sheetUpdateRequest.getPlace());
+            if(!sheet.getTime().isEmpty())
+                sheet.setTime(sheetUpdateRequest.getTime());
+            if(!sheet.getDay().isEmpty())
+                sheet.setDay(sheetUpdateRequest.getDay());
+            sheetRepository.save(sheet);
+            return ResponseDto.setSuccess("성공적으로 업데이트 되었습니다", sheet);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseDto.setFailed("데이터 베이스 오류");
+
+        }
     }
 
     public void delete(Long sheetId) {

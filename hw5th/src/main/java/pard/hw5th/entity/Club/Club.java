@@ -26,7 +26,7 @@ public class Club {
 
     private Integer num;
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Sheet> checkedSheet = new ArrayList<>();
 
     @Builder
@@ -44,6 +44,14 @@ public class Club {
         if (num != null) {
             this.num = num;
         }
+    }
+
+    public void delete() {
+        // 동아리에 연결된 시트를 삭제
+        for (Sheet sheet : checkedSheet) {
+            sheet.setClub(null); // 동아리와의 연관 관계 제거
+        }
+        checkedSheet.clear(); // 리스트 비우기
     }
 
 }

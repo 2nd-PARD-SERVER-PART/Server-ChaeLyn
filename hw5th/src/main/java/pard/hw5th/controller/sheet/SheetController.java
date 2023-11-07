@@ -5,10 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pard.hw5th.dto.ResponseDto;
+import pard.hw5th.dto.club.request.ClubCreateRequest;
+import pard.hw5th.dto.club.request.ClubUpdateRequest;
 import pard.hw5th.dto.sheet.request.SheetCheckedRequest;
 import pard.hw5th.dto.sheet.request.SheetCreateRequest;
 import pard.hw5th.dto.sheet.request.SheetReturnRequest;
+import pard.hw5th.dto.sheet.request.SheetUpdateRequest;
 import pard.hw5th.dto.sheet.response.SheetResponse;
+import pard.hw5th.entity.Club.Club;
 import pard.hw5th.entity.Sheet.Sheet;
 import pard.hw5th.service.sheet.SheetService;
 
@@ -21,10 +26,9 @@ public class SheetController {
     private final SheetService sheetService;
 
     @PostMapping("/sheetRegister")
-    public ResponseEntity<Sheet> createSheet(@RequestBody SheetCreateRequest request) {
-        Sheet createdSheet = sheetService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(createdSheet);
+    public ResponseDto<Sheet> createSheet(@RequestBody SheetCreateRequest request) {
+        ResponseDto<Sheet> result = sheetService.createSheet(request);
+        return result;
     }
 
     @PutMapping("/checkSheet/{sheetId}")
@@ -61,6 +65,12 @@ public class SheetController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(sheet);
+    }
+
+    @PatchMapping("/sheetupdate/{sheetId}")
+    public ResponseDto<Sheet> updateSheet(@PathVariable Long sheetId, @RequestBody SheetUpdateRequest sheetUpdateRequest) {
+        ResponseDto<Sheet> result = sheetService.updateSheet(sheetId, sheetUpdateRequest);
+        return result;
     }
 
     @DeleteMapping("/deletesheet/{sheetId}")
