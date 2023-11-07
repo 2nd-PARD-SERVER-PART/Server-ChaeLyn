@@ -173,9 +173,12 @@ Temporary Items
 ### macOS Patch ###
 # iCloud generated files
 *.icloud
-
+firstSeminar/
+2ndSeminar/
+thirdSeminar/
 hw3rd/
-pard/
-seminar5th/
+pardProtect/
+seminar5th 1/
 seminar5th 2/
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,macos
