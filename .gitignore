@@ -174,9 +174,8 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
-hw3rd/*
-thirdSeminar/*
-pard/*
-seminar5th/*
-seminar5th 2/*
+hw3rd/
+pard/
+seminar5th/
+seminar5th 2/
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,macos
