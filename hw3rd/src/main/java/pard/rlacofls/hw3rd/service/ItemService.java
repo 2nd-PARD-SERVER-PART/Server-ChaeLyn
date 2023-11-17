@@ -17,12 +17,12 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public ResponseDto<ItemEntity> addItem(ItemAddDto itemAddDto) {
+    public ResponseDto<ItemEntity> addItem(ItemAddDto itemAddDto) { // Create item
         ItemEntity item = new ItemEntity(itemAddDto);
-        if ((itemRepository.existsByItemName(item.getItemName()))) {
+        if ((itemRepository.existsByItemName(item.getItemName()))) { // 상품명 중복 방지
             return ResponseDto.setFailed("같은 이름의 품목이 있습니다");
 
-        } else if(item.getItemPrice() >= 50000){
+        } else if(item.getItemPrice() >= 50000){ //5만원 이내의 상품만 등록 가능
             return ResponseDto.setFailed("가격 조정 필요(50000원 이내)");
         }else{
             itemRepository.save(item);
@@ -31,7 +31,7 @@ public class ItemService {
         }
     }
 
-    public ResponseDto<List<ItemEntity>> findAll() {
+    public ResponseDto<List<ItemEntity>> findAll() { // 전체 리스트 출력
         List<ItemEntity> items;
         try {
             items = itemRepository.findAll();
@@ -42,7 +42,7 @@ public class ItemService {
         }
     }
 
-    public ResponseDto<ItemEntity> findOne(Integer itemId) {
+    public ResponseDto<ItemEntity> findOne(Integer itemId) { // 입력 받은 ID에 해당하는 상품 출력
         ItemEntity item;
         try {
             item = itemRepository.findById(itemId).get();
@@ -52,14 +52,14 @@ public class ItemService {
             return ResponseDto.setFailed("DB 오류");
         }
     }
-    public ResponseDto<ItemEntity> updateItem(Integer itemId, ItemAddDto itemAddDto) {
+    public ResponseDto<ItemEntity> updateItem(Integer itemId, ItemAddDto itemAddDto) { // 입력받은 ID에 해당하는 상품 수정
         ItemEntity item;
         try {
-            item = itemRepository.findById(itemId).get(); //바꿀 아이템 아이디 불러온 것 item에 저장되어있음...
-            if (!itemAddDto.getItemName().isEmpty()) item.setItemName(itemAddDto.getItemName());
-            if (itemAddDto.getItemPrice() >= 0 && itemAddDto.getItemPrice() < 50000)
+            item = itemRepository.findById(itemId).get();
+            if (!itemAddDto.getItemName().isEmpty()) item.setItemName(itemAddDto.getItemName()); // 이름을 빈칸으로 입력하면, 이전의 이름 그대로 유지
+            if (itemAddDto.getItemPrice() >= 0 && itemAddDto.getItemPrice() < 50000) // 가격은 0원 이상 5만원 이하
                 item.setItemPrice(itemAddDto.getItemPrice());
-            if (itemAddDto.getItemQuantity() >= 0) item.setItemQuantity(itemAddDto.getItemQuantity());
+            if (itemAddDto.getItemQuantity() >= 0) item.setItemQuantity(itemAddDto.getItemQuantity()); // 수량이 0개 이상이어야함
             itemRepository.save(item);
             return ResponseDto.setSuccess("품목이 업데이트 되었습니다", item);
         } catch (Exception e) {
@@ -74,12 +74,13 @@ public class ItemService {
                 itemRepository.deleteById(itemId);
                 return ResponseDto.setSuccess("삭제 되었습니다.", null);
             }
-            return ResponseDto.setFailed("존재하지 않는 id입니다");
+            return ResponseDto.setFailed("존재하지 않는 id입니다"); // 리스트에 있는 ID인지 확인
         } catch (Exception e) {
-            return ResponseDto.setFailed("ㅠㅠ");
+            return ResponseDto.setFailed("DB 오류");
         }
     }
 
+    // 입력 받은 가격 이하의 품목들 리스트 출력
     public ResponseDto<List<ItemEntity>> findItemEntitiesByItemPriceLessThan(int price) {
         List<ItemEntity> items;
         try {
@@ -91,6 +92,7 @@ public class ItemService {
         }
     }
 
+    // 입력 받은 수량 이하의 품목들 리스트 출력
     public ResponseDto<List<ItemEntity>> findByItemQuantityLessThan(int quantity){
         List<ItemEntity> items;
         try {
@@ -102,6 +104,7 @@ public class ItemService {
         }
     }
 
+    // 해당 키워드 가지고 있는 품목 출력
     public ResponseDto<List<ItemEntity>> findByItemNameContaining(String keyword) {
         List<ItemEntity> items;
         try {
@@ -113,6 +116,7 @@ public class ItemService {
         }
     }
 
+    // minPrice와 maxPrice 사이의 품목 출력
     public ResponseDto<List<ItemEntity>> findByItemPriceBetween(int minPrice, int maxPrice) {
         List<ItemEntity> items;
         try {

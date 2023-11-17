@@ -19,6 +19,8 @@ import java.util.List;
             this.itemService = itemService;
         }
 
+        // create item
+        //RequestBody로 입력 받기에 json 파일로 보내줘야함
         @PostMapping("/additem")
         public ResponseDto<ItemEntity> addItem(@RequestBody ItemAddDto dto) {
             ResponseDto<ItemEntity> result = itemService.addItem(dto);
@@ -31,12 +33,14 @@ import java.util.List;
             return result;
         }
 
+        // PathVariable이므로 api에 해당 id 입력 필요
         @GetMapping("/findone/{itemId}")
         public ResponseDto<ItemEntity> findOne(@PathVariable Integer itemId) {
             ResponseDto<ItemEntity> result = itemService.findOne(itemId);
             return result;
         }
 
+        // 바꿀 품목의 id - PathVariable 바꿀 내용 - RequestBody
         @PatchMapping("/updateitem/{itemId}")
         public ResponseDto<ItemEntity> updateItem(@PathVariable Integer itemId, @RequestBody ItemAddDto dto) {
             ResponseDto<ItemEntity> result = itemService.updateItem(itemId, dto);
@@ -49,7 +53,7 @@ import java.util.List;
             return result;
         }
 
-    //jpa 구문 만들어보깅
+    //jpa 구문 만든 부분
     @GetMapping("/lessprice/{itemPrice}")
     public ResponseDto<List<ItemEntity>> findItemEntitiesByItemPriceLessThan(@PathVariable int itemPrice) {
         ResponseDto<List<ItemEntity>> result = itemService.findItemEntitiesByItemPriceLessThan(itemPrice);
