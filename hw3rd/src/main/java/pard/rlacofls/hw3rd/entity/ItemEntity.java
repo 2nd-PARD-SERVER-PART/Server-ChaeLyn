@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 알아서 증가
-    private Integer itemId; // 엔티티의 PM
+    private Integer itemId; // 엔티티의 Pimary Key
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String itemName; //이름
